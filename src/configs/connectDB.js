@@ -5,7 +5,7 @@ const config = {
     user: 'sa',
     password: '123',
     server: 'localhost',
-    database: 'DB_TRANSLATE',
+    database: 'QLTD',
     options: {
         encrypt: true, // for azure
         trustServerCertificate: true, // change to true for local dev / self-signed certs
@@ -22,17 +22,27 @@ const config = {
 //     }
 // }
 
+const mongoose = require('mongoose');
+
 async function connectDB() {
     try {
-        let pool = await sql.connect(config);
-        return pool;
-    } catch (err) {
-        console.log('Database Connection Failed! Bad Config: ', err);
-        throw err;
+        await mongoose.connect(process.env.MONGO_URI);
+        const connection = mongoose.connection;
+
+        connection.on('connected', () => {
+            console.log('Connect to db');
+        });
+
+        connection.on('error', (error) => {
+            console.log('Something is wrong in mongodb ', error);
+        });
+    } catch (error) {
+        console.log('Something is wrong. ', error);
     }
 }
+module.exports = connectDB;
 
-module.exports = {
-    connectDB,
-    sql // Export sql for reuse
-}
+// module.exports = {
+//     connectDB,
+//     sql // Export sql for reuse
+// }
