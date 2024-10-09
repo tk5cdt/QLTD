@@ -35,30 +35,7 @@ app.get('/', (req, res) => {
     })
 })
 
-connectDB().then(() => {
-    app.listen(8080, () => {
-        console.log('Server running at ' + 8080);
-    })
-})
-
-// const userSchema = new mongoose.Schema({
-//     name: String,
-//     email: String,
-//     age: Number
-// });
-
-// const User = mongoose.model('User', userSchema);
-
-// async function createSampleData() {
-//     await User.create([
-//         { name: 'Alice', email: 'alice@example.com', age: 25 },
-//         { name: 'Bob', email: 'bob@example.com', age: 30 },
-//         { name: 'Charlie', email: 'charlie@example.com', age: 35 }
-//     ]);
-//     console.log('Sample data created');
-// }
-
-// createSampleData();
+connectDB().catch(console.dir);
 
 // mongoose.connect(process.env.MONGO_URI, {
 //     useNewUrlParser: true,
