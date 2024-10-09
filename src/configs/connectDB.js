@@ -1,38 +1,15 @@
-//import sql from 'mssql';
-const sql = require('mssql');
+const mongoose = require('mongoose');
 
-const config = {
-    user: 'sa',
-    password: '123',
-    server: 'localhost',
-    database: 'DB_TRANSLATE',
-    options: {
-        encrypt: true, // for azure
-        trustServerCertificate: true, // change to true for local dev / self-signed certs
-        characterSet: 'utf8',
-    }
-};
-
-// export async function connectDB() {
-//     try {
-//         const pool = await sql.connect(config);
-//         return pool;
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
 async function connectDB() {
     try {
-        let pool = await sql.connect(config);
-        return pool;
-    } catch (err) {
-        console.log('Database Connection Failed! Bad Config: ', err);
-        throw err;
+        await mongoose.connect(process.env.MONGO_URI, clientOptions);
+        await mongoose.connection.db.admin().command({ ping: 1 });
+        console.log('Connected to the database');
+    } catch (error) {
+        console.log('Something is wrong. ', error);
     }
 }
 
-module.exports = {
-    connectDB,
-    sql // Export sql for reuse
-}
+module.exports = connectDB;

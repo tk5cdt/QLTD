@@ -1,6 +1,6 @@
-import e from 'express';
-import { connectDB } from '../configs/connectDB';
-import axios from "axios";
+const express = require('express')
+const { connectDB } = require('../configs/connectDB')
+const axios = require('axios')
 
 const getTest = (req, res) => {
     const str = "Hello World";
