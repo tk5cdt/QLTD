@@ -30,9 +30,13 @@ configViewEngine(app)
 initApiRoutes(app)
 
 app.get('/', (req, res) => {
-    response.json({
+    res.json({
         message: 'Server running at ' + PORT
     })
+})
+
+app.listen(PORT, () => {
+    console.log('Server running at ' + PORT);
 })
 
 connectDB().catch(console.dir);
