@@ -13,7 +13,7 @@ const create = async (req, res) => {
     const job = new Job({
         jobTitle: req.body.jobTitle,
         jobDescription: req.body.jobDescription,
-        requirements: req.body.requirements,
+        requirements: Array.isArray(req.body.requirements) ? req.body.requirements : [],
         location: req.body.location,
         salaryRange: req.body.salaryRange,
         employmentType: req.body.employmentType,
