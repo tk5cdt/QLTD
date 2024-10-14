@@ -76,38 +76,28 @@ const applicationSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
+    }
+})
+
+const employeesSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+    },
+
+    password: {
+        type: String,
+        required: true,
     },
 
     jobs:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: "jobs"
     }],
-
-    interviews:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "interview"
-    }
-})
-
-const interviewSchema = new mongoose.Schema({
-    interviewDate: {
-        type: Date,
-        required: true,
-    },
-
-    result: {
-        type: String,
-        required: true,
-    },
-
-    applications:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "applications"
-    }
-})
+});
 
 let Job = mongoose.model("jobs", jobSchema);
 let Application = mongoose.model("applications", applicationSchema);
-let Interview = mongoose.model("interview", interviewSchema);
+let Employees = mongoose.model("employees", employeesSchema);
 
-module.exports= {Job, Application, Interview}
+module.exports= {Job, Application, Employees}
