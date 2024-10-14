@@ -9,35 +9,44 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
     <title>Document</title>
 </head>
 
 <body>
-    <div class="mx-auto" style="width: 200px;">
-        <h1>Ten Job</h1>
+    <%- include('../views/nav.ejs') %>
+    <div class="m-5" style="width: auto;">
+        <h2 style="text-align: center; font-size: 64px; font-weight: 700; line-height: 64px;"><%= job.jobTitle %></h2>
     </div>
-    <div class="container mx-auto p-5" style="border-radius: 50px; background: #f8f9fa; box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;">
-        <form class="row g-3 mx-2" action="/cv/postFormApply/<%= job._id %>" method="post">
-            <div class="col-12">
-                <label for="fullName" class="form-label">Name<s style="color: red;">*</s></label>
-                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Type your name" required>
-            </div>
-            <div class="col-md-6">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="col-md-6">
-                <label for="phone" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="phone" name="phone" required>
-            </div>
-            <div class="col-md-12">
-                <label for="resume" class="form-label">Resume</label>
-                <input class="form-control" type="file" id="resume" required>
-            </div>
-            <div class="col-12 d-flex justify-content-center align-items-center">
-                <button type="submit" class="btn btn-primary btn-lg">Apply CV</button>
-            </div>
-        </form>
+    <div class="d-flex justify-content-center align-items-center ">
+        <div class="container m-auto p-5" style="border-radius: 50px; background: #f8f9fa; box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;">
+            <form class="row g-3 mx-2" action="/cv/postFormApply/<%= job._id %>" method="post">
+                <div class="col-12">
+                    <label for="fullName" class="form-label">Name<s style="color: red;">*</s></label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Type your name" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="col-md-12">
+                    <label for="resume" class="form-label">Resume</label>
+                    <input class="form-control" type="file" id="resume" required>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Apply CV</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="foot">
+        <%- include('../views/footer.ejs') %>
     </div>
 </body>
 
