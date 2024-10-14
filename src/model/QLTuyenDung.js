@@ -64,8 +64,7 @@ const applicationSchema = new mongoose.Schema({
     },
 
     resume: {
-        type: String,
-        required: true,
+        type: String
     },
 
     applicationDate: {
@@ -74,8 +73,7 @@ const applicationSchema = new mongoose.Schema({
     },
 
     status: {
-        type: String,
-        required: true,
+        type: String
     }
 })
 
