@@ -6,6 +6,7 @@ const {Job} = require('../model/QLTuyenDung')
 const getFormCreateJob = async (req, res) => {
     return res.render('formCreateJob', { job: {}, message: "" });
 }
+
 // Create and save a new job
 const create = async (req, res) => {
     try {
@@ -24,9 +25,10 @@ const create = async (req, res) => {
             return res.status(400).send({ message: "Closing Date must be after Posted Date." });
         }
 
+        console.log(req.body);
         const job = new Job({
             jobTitle: req.body.jobTitle,
-            jobDescription: req.body.jobDescription,
+            jobDescription: Array.isArray(req.body.jobDescription) ? req.body.jobDescription : [],
             requirements: Array.isArray(req.body.requirements) ? req.body.requirements : [],
             location: req.body.location,
             salaryRange: req.body.salaryRange,
@@ -38,7 +40,8 @@ const create = async (req, res) => {
 
         const savedJob = await job.save();
 
-        return res.render('formCreateJob', { job: savedJob, message: "Job created successfully!" });
+        // return res.redirect('/api/getFormCreateJob', { job: savedJob, message: "Job created successfully!" });
+        return res.redirect('/api/getFormCreateJob?message=Job created successfully!');
     } catch (err) {
         res.status(500).send({ message: err.message || "Some error occurred while creating the job." });
     }
