@@ -3,29 +3,48 @@ const { connectDB } = require('../configs/connectDB')
 const axios = require('axios')
 const {Job} = require('../model/QLTuyenDung')
 
+const getFormCreateJob = async (req, res) => {
+    return res.render('formCreateJob', { job: {}, message: "" });
+}
+
 // Create and save a new job
 const create = async (req, res) => {
-    if(!req.body)
-    {
-        res.status(400).send({message: "Content can not be empty!"});
-        return;
+    try {
+        if (!req.body) {
+            return res.status(400).send({ message: "Content cannot be empty!" });
+        }
+
+        const postedDate = new Date(req.body.postedDate);
+        const closingDate = new Date(req.body.closingDate);
+
+        if (isNaN(postedDate) || isNaN(closingDate)) {
+            return res.status(400).send({ message: "Invalid dates provided." });
+        }
+
+        if (closingDate <= postedDate) {
+            return res.status(400).send({ message: "Closing Date must be after Posted Date." });
+        }
+
+        console.log(req.body);
+        const job = new Job({
+            jobTitle: req.body.jobTitle,
+            jobDescription: Array.isArray(req.body.jobDescription) ? req.body.jobDescription : [],
+            requirements: Array.isArray(req.body.requirements) ? req.body.requirements : [],
+            location: req.body.location,
+            salaryRange: req.body.salaryRange,
+            employmentType: req.body.employmentType,
+            postedDate: postedDate,
+            closingDate: closingDate,
+            // applications: req.body.applications
+        });
+
+        const savedJob = await job.save();
+
+        // return res.redirect('/api/getFormCreateJob', { job: savedJob, message: "Job created successfully!" });
+        return res.redirect('/api/getFormCreateJob?message=Job created successfully!');
+    } catch (err) {
+        res.status(500).send({ message: err.message || "Some error occurred while creating the job." });
     }
-    const job = new Job({
-        jobTitle: req.body.jobTitle,
-        jobDescription: req.body.jobDescription,
-        requirements: Array.isArray(req.body.requirements) ? req.body.requirements : [],
-        location: req.body.location,
-        salaryRange: req.body.salaryRange,
-        employmentType: req.body.employmentType,
-        postedDate: stringToDate(req.body.postedDate),
-        closingDate: stringToDate(req.body.closingDate),
-        // applications: req.body.applications
-    });
-    job.save(job).then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({message: err.message || "Some error occurred while creating the job."});
-    });
 }
 
 function stringToDate(dateString) {
@@ -91,6 +110,7 @@ const deleteJob = async (req, res) => {
 }
 
 module.exports = {
+    getFormCreateJob,
     create,
     stringToDate,
     getJob,

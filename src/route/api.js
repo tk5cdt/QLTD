@@ -4,7 +4,7 @@ const job = require('../controller/jobControllers')
 const router = express.Router();
 
 const initApiRoute = (app) => {
-    router.get('/gettest', apiController.getTest);
+    router.get('/getFormCreateJob', job.getFormCreateJob);
     router.post('/create', job.create);
     router.get('/getjob', job.getJob);
     router.put('/updatejob/:id', job.updateJob);
