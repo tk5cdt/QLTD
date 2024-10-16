@@ -14,7 +14,7 @@
         "@babel/core": "^7.24.5",
         "@babel/node": "^7.23.9",
         "@babel/preset-env": "^7.24.5",
-        "axios": "^1.7.3",
+        "axios": "^1.7.7",
         "bcrypt": "^5.1.1",
         "body-parser": "^1.20.2",
         "dotenv": "^16.4.5",
@@ -22,9 +22,11 @@
         "express": "^4.21.1",
         "express-handlebars": "^7.1.2",
         "express-session": "^1.0.0",
+        "googleapis": "^144.0.0",
         "mongoose": "^8.5.1",
         "morgan": "^1.10.0",
         "mssql": "^11.0.1",
+        "multer": "^1.4.5-lts.1",
         "nodemon": "^3.1.0"
     }
 }
