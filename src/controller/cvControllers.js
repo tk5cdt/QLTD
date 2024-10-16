@@ -1,4 +1,5 @@
-import qltd from '../model/QLTuyenDung';
+// import qltd from '../model/QLTuyenDung';
+const {Application} = require('../model/QLTuyenDung');
 
 const getFormApply = async (req, res) => {
     let id = "670b99a1b9c798484963f701";
