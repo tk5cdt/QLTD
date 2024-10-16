@@ -67,6 +67,10 @@ const applicationSchema = new mongoose.Schema({
         type: String
     },
 
+    resumeName: {
+        type: String
+    },
+
     applicationDate: {
         type: Date,
         required: true,

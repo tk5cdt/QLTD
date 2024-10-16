@@ -9,7 +9,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 8080;
 const app = express()
 const mongoose = require('mongoose');
-const { init } = require('express/lib/application')
+const { init } = require('express/lib/application');
 
 //config to use req.body
 app.use(express.urlencoded({ extended: true }));

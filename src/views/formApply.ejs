@@ -12,7 +12,7 @@
     
     <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
-    <title>Document</title>
+    <title><%= job.jobTitle %></title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
     </div>
     <div class="d-flex justify-content-center align-items-center ">
         <div class="container m-auto p-5" style="border-radius: 50px; background: #f8f9fa; box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;">
-            <form class="row g-3 mx-2" action="/cv/postFormApply/<%= job._id %>" method="post">
+            <form class="row g-3 mx-2" action="/cv/postFormApply/<%= job._id %>" enctype="multipart/form-data" method="post">
                 <div class="col-12">
                     <label for="fullName" class="form-label">Name<s style="color: red;">*</s></label>
                     <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Type your name" required>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-md-12">
                     <label for="resume" class="form-label">Resume</label>
-                    <input class="form-control" type="file" id="resume" required>
+                    <input class="form-control" type="file" id="resume" name="resume" accept="application/pdf" required>
                 </div>
                 <div class="col-12 d-flex justify-content-center align-items-center">
                     <button type="submit" class="btn btn-primary btn-lg">Apply CV</button>
