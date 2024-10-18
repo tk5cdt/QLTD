@@ -64,7 +64,7 @@ const getJob = async (req, res) => {
             if (!data) {
                 res.status(404).send({message: `Not found Job with id=${id}`});
             } else {
-                res.send(data);
+                return res.render('jobdetail', { job: data, message: "" });
             }
         }).catch(err => {
             res.status(500).send({message: err.message || `Error retrieving Job with id=${id}`});
@@ -72,7 +72,7 @@ const getJob = async (req, res) => {
         return;
     }
     Job.find().then(data => {
-        res.send(data);
+        return res.render('listjob', { jobs: data, message: "" });
     }).catch(err => {
         res.status(500).send({message: err.message || "Some error occurred while retrieving jobs."});
     });
