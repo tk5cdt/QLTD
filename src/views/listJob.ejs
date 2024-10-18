@@ -6,83 +6,136 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
     <!-- Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet"
+        type="text/css" />
+
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 
 <body class="px-5">
     <%- include('../views/nav.ejs') %>
-    <div class = 'container'>
-        <h1 class = "text-center text-uppercase fw-bold">Opportunities</h1>
-        <p class = "text-center fs-5">Join us today and keep maximizing your potential thanks to working with the best talents, on most successful brands, in sizable projects that impact on millions of Vietnamese lives.</p>
+        <div class='container'>
+            <h1 class="text-center text-uppercase fw-bold">Opportunities</h1>
+            <p class="text-center fs-5">Join us today and keep maximizing your potential thanks to working with the best
+                talents, on most successful brands, in sizable projects that impact on millions of Vietnamese lives.</p>
 
-        <form class="d-flex mb-3" action="/api/getjobbyname" method="POST">
-            <input class="form-control form-control-lg me-2" name="jobName" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-primary fw-bold fs-5" type="submit">Search</button>
-        </form>
-
-        <div class = "row">
-            <div class="col">
-                <form action="/api/getjobbylocation" method="POST">
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="location">
-                        <option selected>Location</option>
-                        <option value="hochiminh">Hồ Chí Minh</option>
-                        <option value="hanoi">Hà Nội</option>
-                    </select>
-                </form>
-                
+            <div id="searchForm" class="d-flex mb-3">
+                <input class="form-control form-control-lg me-2" name="jobName" type="search" placeholder="Search"
+                    aria-label="Search" id="jobName">
+                <button class="btn btn-primary fw-bold fs-5" id="searchButton">Search</button>
             </div>
-            <div class="col">
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                    <option selected>Select types</option>
-                    <option value="fulltime">Full-time</option>
-                    <option value="internship">Internship</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="row mb-3">
-            <% jobs.forEach((job, index) => { %>
-                <div class="col-4 mb-3">
-                    <div class="card bg-light" style="height: 150px;">
-                        <div class="card-body">
-                            <p>
-                                <span><%= job.location %></span>
-                                <span class = "mx-4"><%= job.employmentType %></span>
-                            </p>
-                            <h4 class="card-title"><%= job.jobTitle %></h4>
-                        </div>
+            <form id="filterForm">
+                <div class="row">
+                    <div class="col">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="location" id="location">
+                            <option value="Location">Location</option>
+                            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                            <option value="Hà Nội">Hà Nội</option>
+                        </select>
+
+                    </div>
+                    <div class="col">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="employmentType" id="employmentType">
+                            <option value="Select types">Select types</option>
+                            <option value="full-time">Full-time</option>
+                            <option value="internship">Internship</option>
+                        </select>
                     </div>
                 </div>
-            <% }) %>
+            </form>
+
+            <div class="row mb-3" id="jobList">
+                <%- include('../partial/jobList.ejs', { jobs }) %>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= page - 1 %>&pagesize=<%= pagesize %>"
+                            aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">
+                            <%= page %>
+                        </a></li>
+                    <li class="page-item <%= jobs.length < pagesize ? 'disabled' : '' %>">
+                        <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>"
+                            aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        <!-- Pagination -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center mt-4">
-                <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= page - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#"><%= page %></a></li>
-                <li class="page-item <%= jobs.length < pagesize ? 'disabled' : '' %>">
-                    <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    
-    <div class="foot">
-        <%- include('../views/footer.ejs') %>
-    </div>
-</body>
+        <div class="foot">
+            <%- include('../views/footer.ejs') %>
+        </div>
 
+
+</body>
+<script>
+    const filterJob = (params) => {
+        axios.get('/api/getjobbyfilter', {
+            params: {
+                jobName: params.jobName || '',
+                location: params.location || '',
+                employmentType: params.employmentType || ''
+            }
+        })
+            .then(response => {
+                const job = response.data;
+                document.getElementById('jobList').innerHTML = '';
+                job.forEach(element => { 
+                    document.getElementById('jobList').innerHTML += `
+                    <div class="col-4 mb-3">
+                        <div class="card bg-light" style="height: 150px;">
+                            <div class="card-body">
+                                <p>
+                                    <span> ${element.location}</span>
+                                    <span class="mx-4">${element.employmentType}</span>
+                                </p>
+                                <h4 class="card-title">${element.jobTitle}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                    
+                })
+
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    document.getElementById('searchButton').addEventListener("click", () => {
+        const params = { jobName: document.getElementById('jobName').value }
+        filterJob(params)
+    })
+
+    const filterForm = document.getElementById('filterForm')
+    filterForm.addEventListener('change', function () {
+        const params = { location: document.getElementById('location').value, employmentType: document.getElementById('employmentType').value}
+        filterJob(params)
+    });
+</script>
 </html>
