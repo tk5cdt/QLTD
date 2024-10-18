@@ -2,6 +2,7 @@ const express = require('express')
 const { connectDB } = require('../configs/connectDB')
 const axios = require('axios')
 const {Job} = require('../model/QLTuyenDung')
+import qltd from '../model/QLTuyenDung';
 
 const getFormCreateJob = async (req, res) => {
     return res.render('formCreateJob', { job: {}, message: "" });
@@ -71,11 +72,23 @@ const getJob = async (req, res) => {
         });
         return;
     }
-    Job.find().then(data => {
-        return res.render('listjob', { jobs: data, message: "" });
-    }).catch(err => {
-        res.status(500).send({message: err.message || "Some error occurred while retrieving jobs."});
-    });
+    else{
+        let pagesize = req.query.pagesize || 9;
+        let page = req.query.page || 1;
+        try {
+            const jobs = await qltd.Job.find().skip((page - 1) * pagesize).limit(pagesize);
+            return res.render('listJob', { jobs, pagesize, page});
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(500).send("An error occurred while fetching the applications.");
+        }
+        // Job.find().then(data => {
+        //     return res.render('listJob', { jobs: data, message: "" });
+        // }).catch(err => {
+        //     res.status(500).send({message: err.message || "Some error occurred while retrieving jobs."});
+        // });
+    }
 }
 
 const updateJob = async (req, res) => {
@@ -109,11 +122,42 @@ const deleteJob = async (req, res) => {
     });
 }
 
+const getJobByName = async (req, res) => {
+    let {jobName} = req.body;
+
+    let pagesize = req.query.pagesize || 9;
+    let page = req.query.page || 1;
+    try {
+        const jobs = await qltd.Job.find({ jobTitle: { $regex: jobName, $options: 'i' } }).skip((page - 1) * pagesize).limit(pagesize);
+        return res.render('listJob', { jobs, pagesize, page});
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).send("An error occurred while fetching the applications.");
+    }
+}
+
+const getJobByLocation = async (req, res) => {
+    let {location} = req.body;
+
+    let pagesize = req.query.pagesize || 9;
+    let page = req.query.page || 1;
+    try {
+        const jobs = await qltd.Job.find({ location: { $regex: location, $options: 'i' } }).skip((page - 1) * pagesize).limit(pagesize);
+        return res.render('listJob', { jobs, pagesize, page});
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).send("An error occurred while fetching the applications.");
+    }
+}
 module.exports = {
     getFormCreateJob,
     create,
     stringToDate,
     getJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    getJobByName,
+    getJobByLocation
 }
