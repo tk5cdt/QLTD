@@ -2,39 +2,112 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-    
-    <!-- Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
-    <title><%= job.jobTitle %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
+  <title><%= job.jobTitle %></title>
+  <style>
+    .text--md {
+      font-size: 19px;
+      line-height: 28px;
+    }
+  </style>
 </head>
 
-<body>
-    <%- include('../views/nav.ejs') %>
-    <div class="m-5" style="width: auto;">
-        <h2 style="text-align: center; font-size: 64px; font-weight: 700; line-height: 64px;"><%= job.jobTitle %></h2>
-        
+<body class="px-5">
+  <%- include('../views/nav.ejs') %>
+  <div class='container'>
+    <div class="row">
+      <div class="col-9">
+        <div class="mt-4" style="width: auto;">
+          <h2 style="font-size: 45px; font-weight: 700; line-height: 64px;"><%= job.jobTitle %></h2>
+        </div>
 
+        <div class="d-inline-flex p-2 mt-4 bg-light justify-content-center rounded-pill" style="width: 200px;">
+          <div class="d-flex align-items-center">
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="ml-2 mx-1"><%= job.location %></span>
+          </div>
+        </div>
+        <div class="d-inline-flex p-2 bg-light justify-content-center rounded-pill" style="width: 150px;">
+          <%= job.employmentType %>
+        </div>
 
+        <div class="mt-5">
+          <h3>
+            <i class="fas fa-tasks" style="color: blue;"></i>
+            What you will do
+          </h3>
+        </div>
+        <div class="text--md px-5">
+          <ul>
+            <% job.jobDescription.forEach((description) => { %>
+            <li><%= description %></li>
+            <% }) %>
+          </ul>
+        </div>
 
+        <div class="mt-4">
+          <h3>
+            <i class="fas fa-tasks" style="color: blue;"></i>
+            What you will need
+          </h3>
+          <div class="text--md px-5">
+            <ul>
+              <% job.requirements.forEach((requirement) => { %>
+              <li><%= requirement %></li>
+              <% }) %>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <h4>
+            <i class="fas fa-hand-holding-usd" style="color: blue;"></i>
+            Salary: <%= job.salaryRange%>
+          </h4>
+        </div>
+
+        <div class="mt-4">
+          <h4>
+            <i class="fas fa-calendar-alt" style="color: blue;"></i>
+            <span class="ml-2"><%= new Date(job.postedDate).toLocaleDateString('en-GB') %> - <i class="fas fa-calendar-alt" style="color: blue;"></i> <%= new Date(job.closingDate).toLocaleDateString('en-GB') %></span>
+          </h4>
+        </div>
+
+        <div class="col-12 d-flex align-items-center mt-4">
+          <button type="submit" class="btn btn-primary btn-lg rounded-pill">Apply for this position</button>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="mt-1" style="width: auto;">
+          <h2 style="font-size: 28px; font-weight: 700; line-height: 54px;">Related Jobs</h2>
+
+          <!-- AAAAAAAAAAAAAA -->
+          <div class="card border-light mb-2" style="max-height: 10rem; background-color: #f5f2f2">
+            <div class="card-body mt-2">
+              <p>
+                <span><%= job.location%></span>    
+                <span class="px-3"><%= job.employmentType%></span>    
+              </p>
+              <h6 class="card-title fs-3 mb-2" style="font-weight: 650;"><%= job.jobTitle%></h6>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
-    
-    <div class="foot">
-        <%- include('../views/footer.ejs') %>
-    </div>
+  </div>
+  <div class="foot">
+    <%- include('../views/footer.ejs') %>
+  </div>
 </body>
-
-<script type="text/javascript">
-    const msg = "<%= message %>";
-    if (msg) {
-        alert(msg)
-    }
-</script>
 
 </html>
