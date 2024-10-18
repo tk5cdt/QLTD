@@ -122,14 +122,25 @@ const deleteJob = async (req, res) => {
     });
 }
 
-const getJobByName = async (req, res) => {
-    let {jobName} = req.body;
-
+const getJobByFilter = async (req, res) => {
+    let {jobName, location, employmentType} = req.query;
+    let filter = {};
     let pagesize = req.query.pagesize || 9;
     let page = req.query.page || 1;
     try {
-        const jobs = await qltd.Job.find({ jobTitle: { $regex: jobName, $options: 'i' } }).skip((page - 1) * pagesize).limit(pagesize);
-        return res.render('listJob', { jobs, pagesize, page});
+        if (location && location !== 'Location') {
+            filter.location = { $regex: location, $options: 'i' };
+        }
+        if (employmentType && employmentType !== 'Select types') {
+            filter.employmentType = { $regex: employmentType, $options: 'i' };
+        }
+
+        if (jobName) {
+            filter.jobTitle = { $regex: jobName, $options: 'i' };
+        }
+        console.log("Filter:", filter);
+        const jobs = await qltd.Job.find(filter).skip((page - 1) * pagesize).limit(pagesize);
+        return res.send(jobs);
     }
     catch (error) {
         console.error(error);
@@ -137,20 +148,6 @@ const getJobByName = async (req, res) => {
     }
 }
 
-const getJobByLocation = async (req, res) => {
-    let {location} = req.body;
-
-    let pagesize = req.query.pagesize || 9;
-    let page = req.query.page || 1;
-    try {
-        const jobs = await qltd.Job.find({ location: { $regex: location, $options: 'i' } }).skip((page - 1) * pagesize).limit(pagesize);
-        return res.render('listJob', { jobs, pagesize, page});
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).send("An error occurred while fetching the applications.");
-    }
-}
 module.exports = {
     getFormCreateJob,
     create,
@@ -158,6 +155,5 @@ module.exports = {
     getJob,
     updateJob,
     deleteJob,
-    getJobByName,
-    getJobByLocation
+    getJobByFilter
 }
