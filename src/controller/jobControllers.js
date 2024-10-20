@@ -148,6 +148,27 @@ const getJobByFilter = async (req, res) => {
     }
 }
 
+const getJobRelated = async (req, res) => {
+    const {id} = req.query;
+    console.log("ID:", id);
+    Job.findById(id).then(data => {
+        if (!data) {
+            res.status(404).json({message: `Not found Job with id=${id}`});
+        } else {
+            const location = data.location;
+            const employmentType = data.employmentType;
+            Job.find({$or: [{location: location}, {employmentType: employmentType}]}).limit(3).then(data => {
+            // Job.find({$and: [{location: location}, {employmentType: employmentType}]}).limit(3).then(data => {
+                return res.send(data);
+            }).catch(err => {
+                res.status(500).send({message: err.message || "Some error occurred while retrieving jobs."});
+            });
+        }
+    }).catch(err => {
+        res.status(500).send({message: err.message || `Error retrieving Job with id=${id}`});
+    });
+}
+
 module.exports = {
     getFormCreateJob,
     create,
@@ -155,5 +176,6 @@ module.exports = {
     getJob,
     updateJob,
     deleteJob,
-    getJobByFilter
+    getJobByFilter,
+    getJobRelated
 }

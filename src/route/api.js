@@ -10,6 +10,7 @@ const initApiRoute = (app) => {
     router.put('/updatejob/:id', job.updateJob);
     router.delete('/deletejob/:id', job.deleteJob);
     router.get('/getjobbyfilter', job.getJobByFilter);
+    router.get('/getjobrelated', job.getJobRelated);
 
     return app.use('/api', router);
 }
