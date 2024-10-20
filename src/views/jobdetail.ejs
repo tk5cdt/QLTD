@@ -18,19 +18,23 @@
       font-size: 19px;
       line-height: 28px;
     }
+    .card-body:hover {
+      background-color: #d7e6f5;
+      transition: 0.3s;
+    }
   </style>
 </head>
 
 <body class="px-5">
   <%- include('../views/nav.ejs') %>
-  <div class='container'>
+  <div class='container' style ="max-width: 1600px;">
     <div class="row">
       <div class="col-9">
-        <div class="mt-4" style="width: auto;">
+        <div class="mt-3" style="width: auto;">
           <h2 style="font-size: 45px; font-weight: 700; line-height: 64px;"><%= job.jobTitle %></h2>
         </div>
 
-        <div class="d-inline-flex p-2 mt-4 bg-light justify-content-center rounded-pill" style="width: 200px;">
+        <div class="d-inline-flex p-2 mt-2 bg-light justify-content-center rounded-pill" style="width: 200px;">
           <div class="d-flex align-items-center">
             <i class="fas fa-map-marker-alt"></i>
             <span class="ml-2 mx-1"><%= job.location %></span>
@@ -40,7 +44,7 @@
           <%= job.employmentType %>
         </div>
 
-        <div class="mt-5">
+        <div class="mt-4">
           <h3>
             <i class="fas fa-tasks" style="color: blue;"></i>
             What you will do
@@ -89,16 +93,15 @@
       <div class="col-3">
         <div class="mt-1" style="width: auto;">
           <h2 style="font-size: 28px; font-weight: 700; line-height: 54px;">Related Jobs</h2>
-
-          <!-- AAAAAAAAAAAAAA -->
-          <div class="card border-light mb-2" style="max-height: 10rem; background-color: #f5f2f2">
-            <div class="card-body mt-2">
-              <p>
-                <span><%= job.location%></span>    
-                <span class="px-3"><%= job.employmentType%></span>    
-              </p>
-              <h6 class="card-title fs-3 mb-2" style="font-weight: 650;"><%= job.jobTitle%></h6>
+          <div class="card bg-light" style="height: 150px;">
+            <div class="card-body">
+                <p>
+                    <span>Hồ Chí Minh</span>
+                    <span class = "mx-4">FullTime</span>
+                </p>
+                <h4 class="card-title">ThanhTruc ne</h4>
             </div>
+        </div>
           </div>
 
         </div>
