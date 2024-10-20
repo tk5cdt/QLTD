@@ -63,13 +63,14 @@
             <div class="row mb-3" id="jobList">
                 <% jobs.forEach((job, index) => { %> 
                     <div class="col-4 mb-3">
-                    <div class="card bg-light" style="height: 150px;">
+                    <div class="card bg-light" style="height: 170px;">
                         <div class="card-body">
                             <p>
                                 <span> <%= job.location %></span>
                                 <span class="mx-4"><%= job.employmentType %></span>
-                            </p>
+                            </p>    
                             <h4 class="card-title"><%= job.jobTitle %></h4>
+                            <a href="/api/getjob?id=<%=job._id%>" class="btn btn-primary">View Job</a>
                         </div>
                     </div>
                 </div>
@@ -119,18 +120,18 @@
                 job.forEach(element => { 
                     document.getElementById('jobList').innerHTML += `
                     <div class="col-4 mb-3">
-                        <div class="card bg-light" style="height: 150px;">
+                        <div class="card bg-light" style="height: 170px;">
                             <div class="card-body">
                                 <p>
                                     <span> ${element.location}</span>
                                     <span class="mx-4">${element.employmentType}</span>
                                 </p>
                                 <h4 class="card-title">${element.jobTitle}</h4>
+                                <a href="/api/getjob?id=${element._id}" class="btn btn-primary">View Job</a>
                             </div>
                         </div>
                     </div>
                     `
-                    
                 })
 
             })
