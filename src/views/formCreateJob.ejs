@@ -14,23 +14,23 @@
   <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
   <style>
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
-    .requirement-title {
-      margin-bottom: 10px;
+    .form-label {
+      font-size: 18px;
     }
   </style>
   <title>Create Job</title>
 </head>
 
-<body>
+<body>  
   <%- include('../views/nav.ejs') %>
   <div class="m-5" style="width: auto;">
     <h2 style="text-align: center; font-size: 64px; font-weight: 700; line-height: 64px;">CREATE JOB</h2>
   </div>
   <div class="d-flex justify-content-center align-items-center ">
-    <div class="container m-auto p-5" style="border-radius: 50px; background: #f8f9fa; box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;">
+    <div class="container m-auto p-5" style="border-radius: 50px; background: #f5f8fa;">
       <form class="row g-3 mx-2" action="/api/create" method="post">
         <div class="col-12">
           <label for="jobTitle" class="form-label">Job Title</label>
@@ -38,71 +38,66 @@
         </div>
 
         <div style="width: auto;">
-          <label for="jobDescription" class="form-label">Job Description</label>
+          <label for="jobDescription" class="form-label mt-3">Job Description</label>
         </div>
         <div style="width: auto;">
-          <button id="button" class="btn btn-outline-primary add-job-description-btn"><i class="fas fa-plus"></i> Add Job Description</button>
+          <button id="button" class="btn btn-outline-primary add-job-description-btn mt-3"><i class="fas fa-plus"></i> Add Job Description</button>
         </div>
         <div class="container mt-4" id="jobDescriptionContainer">
           <div class="input-group mb-3">
-              <input type="text" class="form-control" name="jobDescription" placeholder="Job Description" required>
-              <div class="input-group-append">
-                  <button class="btn removeDescriptionBtn" type="button" style="color: blue;">
-                      <i class="fas fa-trash"></i>
-                  </button>
-              </div>
+            <input type="text" class="form-control" name="jobDescription" placeholder="Job Description" required>
+            <div class="input-group-append">
+              <button class="btn removeDescriptionBtn" type="button" style="color: blue;">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
           </div>
-      </div>
-        <!-- <div class="col-md-12">
-          <label for="jobDescription" class="form-label">Job Description</label>
-          <textarea class="form-control" id="jobDescription" name="jobDescription" required></textarea>
-        </div> -->
+        </div>
+
         <div style="width: auto;">
-          <label for="requirements" class="form-label">Requirements</label>
+          <label for="requirements" class="form-label mt-1">Requirements</label>
         </div>
         <div style="width: auto;">
           <button id="button" class="btn btn-outline-primary add-requirement-btn"><i class="fas fa-plus"></i> Add Requirement</button>
         </div>
 
         <div class="container mt-4" id="requirementsContainer">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="requirements" placeholder="Requirement" required>
-                <div class="input-group-append">
-                    <button class="btn removeRequirementBtn1" type="button" style="color: blue;">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="requirements" placeholder="Requirement" required>
+            <div class="input-group-append">
+              <button class="btn removeRequirementBtn1" type="button" style="color: blue;">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
+          </div>
         </div>
-        
+
         <div class="col-md-12">
           <label for="location" class="form-label">Location</label>
           <input class="form-control" type="text" id="location" name="location" required>
         </div>
         <div class="col-md-6">
-          <label for="salaryRange" class="form-label">Salary Range</label>
+          <label for="salaryRange" class="form-label mt-2">Salary Range</label>
           <input class="form-control" type="number" id="salaryRange" name="salaryRange" required>
         </div>
         <div class="col-md-6">
-          <label for="jobType" class="form-label">Job Type</label>
+          <label for="jobType" class="form-label mt-2">Job Type</label>
           <select class="form-select" id="employmentType" name="employmentType" required>
             <option selected>Choose...</option>
             <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-            <option value="Freelance">Freelance</option>
-            <option value="Internship">Internship & Collaboration</option>
+            <option value="Internship">Internship</option>
           </select>
         </div>
         <div class="col-md-6">
-          <label for="postedDate" class="form-label">Posted Date</label>
+          <label for="postedDate" class="form-label mt-2">Posted Date</label>
           <input class="form-control" type="date" id="postedDate" name="postedDate" required>
         </div>
         <div class="col-md-6">
-          <label for="closingDate" class="form-label">Closing Date</label>
+          <label for="closingDate" class="form-label mt-2">Closing Date</label>
           <input class="form-control" type="date" id="closingDate" name="closingDate" required>
         </div>
-        <div class="col-12 d-flex justify-content-center align-items-center">
-          <button type="submit" class="btn btn-primary btn-lg">Create Job</button>
+        <div class="d-grid gap-2 col-6 mx-auto mt-5">
+          <button type="submit" class="btn btn-outline-primary btn-lg">Create Job</button>
         </div>
       </form>
     </div>
@@ -117,7 +112,7 @@
   if (msg) {
     alert(msg)
   }
-  
+
   document.querySelector('.add-requirement-btn').addEventListener('click', function() {
     addInputWithDeleteButton('requirementsContainer', 'Requirement', 'requirements[]');
   });
@@ -125,6 +120,7 @@
   document.querySelector('.add-job-description-btn').addEventListener('click', function() {
     addInputWithDeleteButton('jobDescriptionContainer', 'Job Description', 'jobDescription[]');
   });
+
   function addInputWithDeleteButton(containerId, placeholderText, inputName) {
     const container = document.getElementById(containerId);
 

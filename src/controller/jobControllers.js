@@ -157,8 +157,7 @@ const getJobRelated = async (req, res) => {
         } else {
             const location = data.location;
             const employmentType = data.employmentType;
-            Job.find({$or: [{location: location}, {employmentType: employmentType}]}).limit(3).then(data => {
-            // Job.find({$and: [{location: location}, {employmentType: employmentType}]}).limit(3).then(data => {
+            Job.find({$or: [{location: location}, {employmentType: employmentType}]}).then(data => {
                 return res.send(data);
             }).catch(err => {
                 res.status(500).send({message: err.message || "Some error occurred while retrieving jobs."});
