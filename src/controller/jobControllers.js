@@ -29,8 +29,8 @@ const create = async (req, res) => {
         console.log(req.body);
         const job = new Job({
             jobTitle: req.body.jobTitle,
-            jobDescription: Array.isArray(req.body.jobDescription) ? req.body.jobDescription : [],
-            requirements: Array.isArray(req.body.requirements) ? req.body.requirements : [],
+            jobDescription: Array.isArray(req.body.jobDescription)? req.body.jobDescription : req.body.jobDescription ? [req.body.jobDescription] : [],
+            requirements: Array.isArray(req.body.requirements)? req.body.requirements : req.body.requirements ? [req.body.jobDescription] : [],
             location: req.body.location,
             salaryRange: req.body.salaryRange,
             employmentType: req.body.employmentType,
@@ -40,9 +40,9 @@ const create = async (req, res) => {
         });
 
         const savedJob = await job.save();
-
-        // return res.redirect('/api/getFormCreateJob', { job: savedJob, message: "Job created successfully!" });
-        return res.redirect('/api/getFormCreateJob?message=Job created successfully!');
+        return res.redirect('/api/getjob?id=' + savedJob._id);
+        // return res.redirect('/api/getjob?id=' + savedJob._id, { job: savedJob, message: "Job created successfully!" });
+        // return res.redirect('/api/getFormCreateJob?message=Job created successfully!');
     } catch (err) {
         res.status(500).send({ message: err.message || "Some error occurred while creating the job." });
     }

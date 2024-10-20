@@ -113,7 +113,7 @@
           const jobRelatedDiv = document.getElementById('job-related');
           if (data.length > 0) {
             data.forEach(job => {
-                  if (job._id !== jobId && jobRelatedDiv.childElementCount < 4) {
+                  if (job._id !== jobId && jobRelatedDiv.childElementCount < 5) {
                     const jobElement = document.createElement('div');
                     document.getElementById('job-related').innerHTML += `
                         <div class="card bg-light border-light mb-4" style="max-height: 180px; width: auto; ">
