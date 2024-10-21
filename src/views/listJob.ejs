@@ -24,6 +24,13 @@
 
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        .card-body:hover {
+            background-color: #d7e6f5;
+            transition: 0.3s;
+        }
+    </style>
 </head>
 
 
@@ -63,14 +70,14 @@
             <div class="row mb-3" id="jobList">
                 <% jobs.forEach((job, index) => { %> 
                     <div class="col-4 mb-3">
-                    <div class="card bg-light" style="height: 170px;">
+                    <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/api/getjob?id=<%= job._id %>';">
                         <div class="card-body">
                             <p>
                                 <span> <%= job.location %></span>
                                 <span class="mx-4"><%= job.employmentType %></span>
                             </p>    
                             <h4 class="card-title"><%= job.jobTitle %></h4>
-                            <a href="/api/getjob?id=<%=job._id%>" class="btn btn-primary">View Job</a>
+                            <!-- <a href="/api/getjob?id=<%=job._id%>" class="btn btn-primary">View Job</a> -->
                         </div>
                     </div>
                 </div>
