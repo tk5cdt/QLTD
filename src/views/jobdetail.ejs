@@ -116,7 +116,7 @@
                   if (job._id !== jobId && jobRelatedDiv.childElementCount < 5) {
                     const jobElement = document.createElement('div');
                     document.getElementById('job-related').innerHTML += `
-                        <div class="card bg-light border-light mb-4" style="max-height: 180px; width: auto; ">
+                        <div class="card bg-light border-light mb-4" style="max-height: 180px; width: auto; " onclick="window.location.href='/api/getjob?id=${job._id}';">
                             <div class="card-body">
                                 <p>
                                     <span> ${job.location}</span>
@@ -126,8 +126,7 @@
                                 <h4 class="card-title">${job.jobTitle}</h4>
                                 <%} else {%>
                                 <h4 class="card-title">${job.jobTitle.substring(0, 50)}...</h4>
-                                <%}%>                                
-                                <a href="/api/getjob?id=${job._id}" class="btn btn-primary">View Job</a>
+                                <%}%>
                             </div>
                         </div>
                     `
