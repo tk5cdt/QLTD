@@ -16,7 +16,7 @@ const initApiRoute = (app) => {
     router.get('/getFormLogin', emp.getFormLogin);
     router.post('/login', emp.login);
 
-    return app.use('/api', router);
+    return app.use('/job', router);
 }
 
 module.exports = initApiRoute;
