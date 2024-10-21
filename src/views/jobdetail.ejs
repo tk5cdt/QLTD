@@ -107,7 +107,7 @@
     const params = new URLSearchParams(window.location.search);
     const jobId = params.get('id');
 
-    fetch(`/api/getjobrelated?id=${jobId}`)
+    fetch(`/job/getjobrelated?id=${jobId}`)
       .then(response => response.json())
       .then(data => {
           const jobRelatedDiv = document.getElementById('job-related');
@@ -116,7 +116,7 @@
                   if (job._id !== jobId && jobRelatedDiv.childElementCount < 5) {
                     const jobElement = document.createElement('div');
                     document.getElementById('job-related').innerHTML += `
-                        <div class="card bg-light border-light mb-4" style="max-height: 180px; width: auto; " onclick="window.location.href='/api/getjob?id=${job._id}';">
+                        <div class="card bg-light border-light mb-4" style="max-height: 180px; width: auto; " onclick="window.location.href='/job/getjob?id=${job._id}';">
                             <div class="card-body">
                                 <p>
                                     <span> ${job.location}</span>
