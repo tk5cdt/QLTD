@@ -65,6 +65,9 @@ const postFormApply = async (req, res) => {
 };
 
 const getListApplication = async (req, res) => {
+    if(!req.session.user){
+        return res.status(401).render('401')
+    }
     let id = req.params.id;
     let pagesize = req.query.pagesize || 10;
     let page = req.query.page || 1;
