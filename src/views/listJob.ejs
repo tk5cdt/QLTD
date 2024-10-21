@@ -70,7 +70,7 @@
             <div class="row mb-3" id="jobList">
                 <% jobs.forEach((job, index) => { %> 
                     <div class="col-4 mb-3">
-                    <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/api/getjob?id=<%= job._id %>';">
+                    <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/job/getjob?id=<%= job._id %>';">
                         <div class="card-body">
                             <p>
                                 <span> <%= job.location %></span>
