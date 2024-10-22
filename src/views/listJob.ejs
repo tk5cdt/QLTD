@@ -37,7 +37,7 @@
 <body class="px-5">
     <%- include('../views/nav.ejs') %>
         <div class='container'>
-            <h1 class="text-center text-uppercase fw-bold">Opportunities</h1>
+            <h2 class="text-center text-uppercase fw-bold">Opportunities</h2>
             <p class="text-center fs-5">Join us today and keep maximizing your potential thanks to working with the best
                 talents, on most successful brands, in sizable projects that impact on millions of Vietnamese lives.</p>
 
@@ -88,17 +88,23 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-4">
                     <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= page - 1 %>&pagesize=<%= pagesize %>"
-                            aria-label="Previous">
+                        <a class="page-link" href="?page=<%= page - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item active"><a class="page-link" href="#">
-                            <%= page %>
-                        </a></li>
+
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                        <% if (i===page) { %>
+                            <span>
+                                <li class="page-item active" style="cursor: default;"><a class="page-link"><%= i %></a></li>
+                            </span>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="?page=<%= i %>&pagesize=<%= pagesize %>"><%= i %></a></li>
+                        <% } %>
+                    <% } %>
+
                     <li class="page-item <%= jobs.length < pagesize ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>"
-                            aria-label="Next">
+                        <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -114,17 +120,25 @@
 </body>
 <script>
     const filterJob = (params) => {
-        axios.get('/api/getjobbyfilter', {
+        axios.get('/job/getjobbyfilter', {
             params: {
                 jobName: params.jobName || '',
                 location: params.location || '',
-                employmentType: params.employmentType || ''
+                employmentType: params.employmentType || '',
+                page: params.page || 1,
+                pagesize: params.pagesize || 9
             }
-        })
-            .then(response => {
-                const job = response.data;
+        }).then(response => {
+                console.log(response.data);
+                const { jobs, pagesize, page, totalJobs } = response.data;
+                console.log("Jobs:", response.data.jobs);
+                const totalPages = Math.ceil(totalJobs / pagesize);
                 document.getElementById('jobList').innerHTML = '';
-                job.forEach(element => { 
+
+                console.log("total", response.data.jobs);
+                console.log("page", page);
+
+                jobs.forEach(element => { 
                     document.getElementById('jobList').innerHTML += `
                     <div class="col-4 mb-3">
                         <div class="card bg-light" style="height: 170px;">
@@ -139,10 +153,32 @@
                         </div>
                     </div>
                     `
-                })
+                });
 
-            })
-            .catch(error => {
+                document.querySelector('.pagination').innerHTML = `
+                    <li class="page-item ${page <= 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="javascript:void(0);" aria-label="Previous" onclick="goToPage(${ parseInt(page) - 1})">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                `
+
+                for (let i = 1; i <= totalPages; i++) {
+                    document.querySelector('.pagination').innerHTML += `
+                        <li class="page-item ${page === i ? 'active' : ''}">
+                            <a class="page-link" href="javascript:void(0);" onclick="goToPage(${i})">${i}</a>
+                        </li>   
+                    `
+                }
+
+                document.querySelector('.pagination').innerHTML += `
+                    <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="javascript:void(0);" aria-label="Next" onclick="goToPage(${ parseInt(page) + 1})">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                `
+            }).catch(error => {
                 console.error('Error fetching data:', error);
             });
     }
@@ -157,5 +193,15 @@
         const params = { location: document.getElementById('location').value, employmentType: document.getElementById('employmentType').value}
         filterJob(params)
     });
+
+    const goToPage = (page) => {
+        const params = {
+            jobName: document.getElementById('jobName').value,
+            location: document.getElementById('location').value,
+            employmentType: document.getElementById('employmentType').value,
+            page: page
+        };
+        filterJob(params);
+    }
 </script>
 </html>

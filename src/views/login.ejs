@@ -36,6 +36,13 @@
                   <label for="password">Password <s style="color: red;">*</s></label>
                   <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                 </div>
+
+                <% if (message) { %>
+                    <p style="color: red;">
+                        * <%= message %>
+                    </p>
+                <% } %>
+
                 <div class="d-flex justify-content-center align-items-center">
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>

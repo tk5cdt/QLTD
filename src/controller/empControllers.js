@@ -13,13 +13,13 @@ const getFormLogin = async (req, res) => {
 const login = async (req, res) => {
     let {name, password} = req.body;
     if (!name || !password) {
-        return res.status(400).render('login', {message: "Username and password are required" });
+        return res.status(400).render('login', {message: "Username and password are required!" });
     }
     try {
         const user = await qltd.Employees.findOne({ username: name });
 
         if (!user) {
-            return res.status(400).render('login', {user, message: "Username is invalid" });
+            return res.status(400).render('login', {user, message: "Username is invalid!" });
         }
 
         console.log("username db:" , user.username);
@@ -33,9 +33,10 @@ const login = async (req, res) => {
 
         if (isMatch) {
             req.session.user = user;
-            return res.redirect('/api/getjob');
+            console.log("Session after login:", req.session);
+            return res.redirect('/job/getjob');
         } else {
-            return res.status(400).render('login', {user, message: "Password is incorrect" });
+            return res.status(400).render('login', {user, message: "Password is incorrect!" });
         }
     } catch (error) {
         console.error(error)
