@@ -40,7 +40,7 @@ const create = async (req, res) => {
         });
 
         const savedJob = await job.save();
-        return res.redirect('/api/getjob?id=' + savedJob._id);
+        return res.redirect('/job/getjob?id=' + savedJob._id);
         // return res.redirect('/api/getjob?id=' + savedJob._id, { job: savedJob, message: "Job created successfully!" });
         // return res.redirect('/api/getFormCreateJob?message=Job created successfully!');
     } catch (err) {

@@ -77,7 +77,6 @@
                                 <span class="mx-4"><%= job.employmentType %></span>
                             </p>    
                             <h4 class="card-title"><%= job.jobTitle %></h4>
-                            <!-- <a href="/api/getjob?id=<%=job._id%>" class="btn btn-primary">View Job</a> -->
                         </div>
                     </div>
                 </div>
@@ -88,7 +87,7 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center mt-4">
                     <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= page - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
+                        <a class="page-link" href="?page=<%= parseInt(page) - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -141,14 +140,13 @@
                 jobs.forEach(element => { 
                     document.getElementById('jobList').innerHTML += `
                     <div class="col-4 mb-3">
-                        <div class="card bg-light" style="height: 170px;">
+                        <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/job/getjob?id=${element._id}';">
                             <div class="card-body">
                                 <p>
                                     <span> ${element.location}</span>
                                     <span class="mx-4">${element.employmentType}</span>
                                 </p>
                                 <h4 class="card-title">${element.jobTitle}</h4>
-                                <a href="/api/getjob?id=${element._id}" class="btn btn-primary">View Job</a>
                             </div>
                         </div>
                     </div>

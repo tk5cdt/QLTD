@@ -43,7 +43,12 @@ const jobSchema = new mongoose.Schema({
     applications:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: "applications"
-    }]
+    }],
+
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "employees"
+    }
 })
 
 const applicationSchema = new mongoose.Schema({
@@ -89,12 +94,7 @@ const employeesSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    },
-
-    jobs:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "jobs"
-    }],
+    }
 });
 
 let Job = mongoose.model("jobs", jobSchema);
