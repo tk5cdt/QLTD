@@ -77,7 +77,9 @@ const getJob = async (req, res) => {
         let page = req.query.page || 1;
         try {
             const jobs = await qltd.Job.find().skip((page - 1) * pagesize).limit(pagesize);
-            return res.render('listJob', { jobs, pagesize, page});
+            const totalJobs = await Job.countDocuments(jobs);
+            const totalPages = Math.ceil(totalJobs / pagesize);
+            return res.render('listJob', { jobs, pagesize, page, totalPages});
         }
         catch (error) {
             console.error(error);
@@ -140,7 +142,8 @@ const getJobByFilter = async (req, res) => {
         }
         console.log("Filter:", filter);
         const jobs = await qltd.Job.find(filter).skip((page - 1) * pagesize).limit(pagesize);
-        return res.send(jobs);
+        const totalJobs = await Job.countDocuments(filter);
+        return res.send({jobs, pagesize, page, totalJobs});
     }
     catch (error) {
         console.error(error);
