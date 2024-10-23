@@ -1,7 +1,23 @@
-<nav class="navbar bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand text-uppercase fw-bold fs-1" href="#" style="color: blue;">
-            TNT CAREERS
-        </a>
+        <a class="navbar-brand text-uppercase fw-bold fs-1" href="#" style="color: blue;">TNT CAREERS</a>
+        <% if (user) { %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <%= user.username %>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="/job/getFormCreateJob">Create new job</a></li>
+                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <% } %>
     </div>
 </nav>

@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 const getFormLogin = async (req, res) => {
     try {
-        return res.render('login', { message: "" });
+        return res.render('login', {user: req.session.user, message: "" });
     } catch (error) {
         console.error(error);
         return res.status(500).send("An error occurred while fetching the job.");
@@ -36,11 +36,11 @@ const login = async (req, res) => {
             console.log("Session after login:", req.session);
             return res.redirect('/job/getjob');
         } else {
-            return res.status(400).render('login', {user, message: "Password is incorrect!" });
+            return res.status(400).render('login', {user: req.session.user, message: "Password is incorrect!" });
         }
     } catch (error) {
         console.error(error)
-        return res.status(500).render('login', {user, message: "Internal server error"});
+        return res.status(500).render('login', {user: req.session.user, message: "Internal server error"});
     }
 }
 
