@@ -5,7 +5,7 @@ const {Job} = require('../model/QLTuyenDung')
 import qltd from '../model/QLTuyenDung';
 
 const getFormCreateJob = async (req, res) => {
-    return res.render('formCreateJob', { job: {}, message: "" });
+    return res.render('formCreateJob', { job: {}, user: req.session.user, message: "" });
 }
 
 // Create and save a new job
@@ -58,6 +58,7 @@ function stringToDate(dateString) {
 }
 
 const getJob = async (req, res) => {
+    const user = req.session.user;
     if(req.query.id)
     {
         const id = req.query.id;
@@ -76,10 +77,10 @@ const getJob = async (req, res) => {
         let pagesize = req.query.pagesize || 9;
         let page = req.query.page || 1;
         try {
-            const jobs = await qltd.Job.find().skip((page - 1) * pagesize).limit(pagesize);
+            const jobs = await qltd.Job.find({ closingDate: { $gt: new Date() } }).skip((page - 1) * pagesize).limit(pagesize);
             const totalJobs = await Job.countDocuments(jobs);
             const totalPages = Math.ceil(totalJobs / pagesize);
-            return res.render('listJob', { jobs, pagesize, page, totalPages});
+            return res.render('listJob', { jobs, pagesize, page, totalPages, user});
         }
         catch (error) {
             console.error(error);
