@@ -66,7 +66,7 @@ const getJob = async (req, res) => {
             if (!data) {
                 res.status(404).send({message: `Not found Job with id=${id}`});
             } else {
-                return res.render('jobdetail', { job: data, message: "" });
+                return res.render('jobdetail', { user: req.session.user, job: data, message: "" });
             }
         }).catch(err => {
             res.status(500).send({message: err.message || `Error retrieving Job with id=${id}`});
@@ -80,7 +80,7 @@ const getJob = async (req, res) => {
             const jobs = await qltd.Job.find({ closingDate: { $gt: new Date() } }).skip((page - 1) * pagesize).limit(pagesize);
             const totalJobs = await Job.countDocuments(jobs);
             const totalPages = Math.ceil(totalJobs / pagesize);
-            return res.render('listJob', { jobs, pagesize, page, totalPages, user});
+            return res.render('listJob', { user: req.session.user, jobs, pagesize, page, totalPages, user});
         }
         catch (error) {
             console.error(error);

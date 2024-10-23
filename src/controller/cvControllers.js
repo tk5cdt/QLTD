@@ -6,7 +6,10 @@ const getFormApply = async (req, res) => {
     let id = req.params.id || "670ad18960064e36c4acb363";
     try {
         const job = await qltd.Job.findById(id);
-        return res.render('formApply', { job, message: "" });
+        if (!job) {
+            return res.status(404).send("Job not found!");
+        }
+        return res.render('formApply', { user: req.session.user, job, message: "" });
     } catch (error) {
         console.error(error);
         return res.status(500).send("An error occurred while fetching the job.");
@@ -17,14 +20,14 @@ const postFormApply = async (req, res) => {
     try {
         const job = await qltd.Job.findById(req.params.id);
         if (!job) {
-            return res.render('formApply', { job, message: "Job not found!" });
+            return res.render('formApply', { user: req.session.user, job, message: "Job not found!" });
         }
 
         if (!req.file || req.file.length === 0) {
             console.log(req.file);
             console.log(req.body.file);
             console.log('No file uploaded');
-            return res.render('formApply', { job, message: "Please upload your resume!" });
+            return res.render('formApply', { user: req.session.user, job, message: "Please upload your resume!" });
         }
         console.log(req.file);
         console.log('req buffer' + req.file.buffer);
@@ -38,7 +41,8 @@ const postFormApply = async (req, res) => {
         console.log(result);
         
         if (!result) {
-            return res.render('formApply', { job, message: "An error occurred while uploading the resume. Please try again later." });
+            // return res.render('formApply', { user: req.session.user, job, message: "An error occurred while uploading the resume. Please try again later." });
+            return res.status(500).send({ message: "An error occurred while uploading the resume. Please try again later." });
         }
 
 
@@ -53,14 +57,16 @@ const postFormApply = async (req, res) => {
         job.applications.push(application);
         await job.save();
 
-        return res.render('formApply', { job, message: "Application submitted successfully!" });
+        // return res.render('formApply', { user: req.session.user, job, message: "Application submitted successfully!" });
+        return res.status(200).send({ message: "Application submitted successfully!" });
     } catch (error) {
         const job = await qltd.Job.findById(req.params.id);
         if (!job) {
-            return res.render('formApply', { job, message: "Job not found!" });
+            return res.render('formApply', { user: req.session.user, job, message: "Job not found!" });
         }
-        console.error("An error occurred:", error);
-        return res.status(500).render('formApply', { job, message: "An error occurred while submitting the application. Please try again later." });
+        // console.error("An error occurred:", error);
+        // return res.status(500).render('formApply', { user: req.session.user, job, message: "An error occurred while submitting the application. Please try again later." });
+        return res.status(500).send({ message: "An error occurred while submitting the application. Please try again later." });
     }
 };
 
@@ -76,8 +82,8 @@ const getListApplication = async (req, res) => {
         if (!job) {
             return res.status(404).send("Job not found!");
         }
-        const applications = await qltd.Application.find({ _id: { $in: job.applications } }).skip((page - 1) * pagesize).limit(pagesize);
-        return res.render('listApplication', { job, applications, pagesize, page});
+        const applications = await qltd.Application.find({ _id: { $in: job.applications } }).sort({applicationDate: 1}).skip((page - 1) * pagesize).limit(pagesize);
+        return res.render('listApplication', { user: req.session.user, job, applications, pagesize, page});
     }
     catch (error) {
         console.error(error);
