@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const initApiRoutes = require('./route/api')
 const initCVRoute = require('./route/cv')
+const initEmpRoute = require('./route/emp')
 const configViewEngine = require('./configs/viewEngine')
 const connectDB = require('./configs/connectDB')
 require('dotenv').config();
@@ -31,6 +32,7 @@ configViewEngine(app)
 
 initApiRoutes(app)
 initCVRoute(app)
+initEmpRoute(app)
 
 app.get('/', (req, res) => {
     res.json({

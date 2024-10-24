@@ -48,7 +48,14 @@ const jobSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "employees"
-    }
+    },
+
+    updatedBy: [
+        {
+            userId: {type: mongoose.Schema.Types.ObjectId, ref: 'employees'} ,
+            updatedAt: { type: Date, default: Date.now }
+        }
+    ]
 })
 
 const applicationSchema = new mongoose.Schema({
