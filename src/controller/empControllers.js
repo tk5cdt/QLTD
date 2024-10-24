@@ -44,7 +44,13 @@ const login = async (req, res) => {
     }
 }
 
+const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect('/job/getjob');
+}
+
 module.exports = {
     getFormLogin,
-    login
+    login,
+    logout
 };
