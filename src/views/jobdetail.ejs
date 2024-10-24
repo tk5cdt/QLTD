@@ -85,8 +85,13 @@
           </h4>
         </div>
 
-        <div class="col-12 d-flex align-items-center mt-4"> 
-          <a href="/cv/getFormApply/<%= job._id %>" class="btn btn-primary btn-lg rounded-pill mx-4">Apply for this position</a>
+        <div class="col-12 d-flex align-items-center mt-4">
+          <% if (user) { %>
+            <a href="/cv/list/<%= job._id %>" class="btn btn-primary btn-lg rounded-pill mx-4">View list apply job</a>
+            <a href="/job/getformupdate/<%= job._id %>" class="btn btn-primary btn-lg rounded-pill mx-4">Update Job</a>
+          <% } else { %>
+            <a href="/cv/getFormApply/<%= job._id %>" class="btn btn-primary btn-lg rounded-pill mx-4">Apply for this position</a>
+          <% } %>
         </div>
       </div>
       <div class="col-3 ">

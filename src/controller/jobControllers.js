@@ -5,12 +5,18 @@ const {Job} = require('../model/QLTuyenDung')
 import qltd from '../model/QLTuyenDung';
 
 const getFormCreateJob = async (req, res) => {
+    if(!req.session.user){
+        return res.status(401).render('401')
+    }
     return res.render('formCreateJob', { job: {}, user: req.session.user, message: "" });
 }
 
 // Create and save a new job
 const create = async (req, res) => {
     try {
+        if(!req.session.user){
+            return res.status(401).render('401')
+        }
         if (!req.body) {
             return res.status(400).send({ message: "Content cannot be empty!" });
         }
@@ -26,7 +32,6 @@ const create = async (req, res) => {
             return res.status(400).send({ message: "Closing Date must be after Posted Date." });
         }
 
-        console.log(req.body);
         const job = new Job({
             jobTitle: req.body.jobTitle,
             jobDescription: Array.isArray(req.body.jobDescription)? req.body.jobDescription : req.body.jobDescription ? [req.body.jobDescription] : [],
@@ -36,13 +41,12 @@ const create = async (req, res) => {
             employmentType: req.body.employmentType,
             postedDate: postedDate,
             closingDate: closingDate,
-            // applications: req.body.applications
+            createdBy: req.session.user._id
         });
 
+        console.log(req.body);
         const savedJob = await job.save();
         return res.redirect('/job/getjob?id=' + savedJob._id);
-        // return res.redirect('/api/getjob?id=' + savedJob._id, { job: savedJob, message: "Job created successfully!" });
-        // return res.redirect('/api/getFormCreateJob?message=Job created successfully!');
     } catch (err) {
         res.status(500).send({ message: err.message || "Some error occurred while creating the job." });
     }
@@ -52,7 +56,7 @@ function stringToDate(dateString) {
     // Sử dụng constructor của Date để chuyển từ chuỗi sang Date
     const timestamp = Date.parse(dateString);
     if (isNaN(timestamp)) {
-        throw new Error("Chuỗi không hợp lệ để chuyển thành ngày tháng.");
+        throw new Error("Invalid date string");
     }
     return new Date(timestamp);
 }
@@ -66,7 +70,7 @@ const getJob = async (req, res) => {
             if (!data) {
                 res.status(404).send({message: `Not found Job with id=${id}`});
             } else {
-                return res.render('jobdetail', { user: req.session.user, job: data, message: "" });
+                return res.render('jobdetail', { user: req.session.user, job: data});
             }
         }).catch(err => {
             res.status(500).send({message: err.message || `Error retrieving Job with id=${id}`});
@@ -93,24 +97,35 @@ const getJob = async (req, res) => {
         // });
     }
 }
-
-const updateJob = async (req, res) => {
-    if(!req.body)
-    {
-        res.status(400).send({message: "Content can not be empty!"});
-        return;
-    }
-    const id = req.params.id;
-    Job.findByIdAndUpdate(id, req.body, {useFindAndModify: false}).then(data => {
+const getFormUpdate = async (req, res) => {
+    Job.findById(req.params.id).then(data => {
         if (!data) {
-            res.status(404).send({message: `Cannot update Job with id=${id}. Maybe Job was not found!`});
-        } else {
-            res.send({message: "Job was updated successfully."});
+            return res.status(404).send({message: `Not found Job with id=${req.params.id}`});
         }
+        return res.render('formUpdate', { job: data, user: req.session.user, message: "" });
     }).catch(err => {
-        res.status(500).send({message: err.message || "Error updating Job with id=" + id});
+        res.status(500).send({message: err.message || `Error retrieving Job with id=${req.params.id}`});
     });
 }
+
+const updateJob = async (req, res) => {
+    if (!req.body) {
+        res.status(400).send({ message: "Content can not be empty!" });
+        return;
+    }
+
+    const id = req.params.id;
+
+    Job.findByIdAndUpdate(id, req.body, { useFindAndModify: false, new: true }).then(data => {
+        if (!data) {
+            res.status(404).send({ message: `Cannot update Job with id=${id}. Maybe Job was not found!` });
+        } else {
+            return res.redirect('/job/getjob?id=' + data._id);
+        }
+    }).catch(err => {
+        res.status(500).send({ message: err.message || "Error updating Job with id=" + id });
+    });
+};
 
 const deleteJob = async (req, res) => {
     const id = req.params.id;
@@ -180,5 +195,6 @@ module.exports = {
     updateJob,
     deleteJob,
     getJobByFilter,
-    getJobRelated
+    getJobRelated,
+    getFormUpdate
 }

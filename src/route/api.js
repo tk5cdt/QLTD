@@ -8,13 +8,15 @@ const initApiRoute = (app) => {
     router.get('/getFormCreateJob', job.getFormCreateJob);
     router.post('/create', job.create);
     router.get('/getjob', job.getJob);
-    router.put('/updatejob/:id', job.updateJob);
+    router.get('/getformupdate/:id', job.getFormUpdate);
+    router.post('/updatejob/:id', job.updateJob);
     router.delete('/deletejob/:id', job.deleteJob);
     router.get('/getjobbyfilter', job.getJobByFilter);
     router.get('/getjobrelated', job.getJobRelated);
 
     router.get('/getFormLogin', emp.getFormLogin);
     router.post('/login', emp.login);
+    router.get('/logout', emp.logout);
 
     return app.use('/job', router);
 }
