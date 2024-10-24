@@ -46,7 +46,7 @@ const create = async (req, res) => {
 
         console.log(req.body);
         const savedJob = await job.save();
-        return res.redirect('/job/getjob?id=' + savedJob._id);
+        return res.redirect('/emp/getjobforemp?id=' + savedJob._id);
     } catch (err) {
         res.status(500).send({ message: err.message || "Some error occurred while creating the job." });
     }
@@ -84,6 +84,7 @@ const getJob = async (req, res) => {
             const jobs = await qltd.Job.find({ closingDate: { $gt: new Date() } }).skip((page - 1) * pagesize).limit(pagesize);
             const totalJobs = await Job.countDocuments(jobs);
             const totalPages = Math.ceil(totalJobs / pagesize);
+            console.log("username:", user);
             return res.render('listJob', { user: req.session.user, jobs, pagesize, page, totalPages, user});
         }
         catch (error) {
@@ -115,12 +116,21 @@ const updateJob = async (req, res) => {
     }
 
     const id = req.params.id;
+    const userId = req.session.user._id;
 
-    Job.findByIdAndUpdate(id, req.body, { useFindAndModify: false, new: true }).then(data => {
+    console.log("username:", userId);
+    const updateData = {
+        ...req.body,
+        $push: {
+            updatedBy: { userId: userId, updatedAt: new Date() }
+        }
+    };
+
+    Job.findByIdAndUpdate(id, updateData, { useFindAndModify: false, new: true }).then(data => {
         if (!data) {
             res.status(404).send({ message: `Cannot update Job with id=${id}. Maybe Job was not found!` });
         } else {
-            return res.redirect('/job/getjob?id=' + data._id);
+            return res.redirect('/emp/getjobforemp?id=' + data._id);
         }
     }).catch(err => {
         res.status(500).send({ message: err.message || "Error updating Job with id=" + id });
@@ -156,10 +166,12 @@ const getJobByFilter = async (req, res) => {
         if (jobName) {
             filter.jobTitle = { $regex: jobName, $options: 'i' };
         }
+        filter.closingDate = { $gt: new Date() };
         console.log("Filter:", filter);
         const jobs = await qltd.Job.find(filter).skip((page - 1) * pagesize).limit(pagesize);
         const totalJobs = await Job.countDocuments(filter);
-        return res.send({jobs, pagesize, page, totalJobs});
+        const user = req.session.userter
+        return res.send({user: req.session.user, jobs, pagesize, page, totalJobs});
     }
     catch (error) {
         console.error(error);

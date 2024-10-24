@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand text-uppercase fw-bold fs-1" href="#" style="color: blue;">TNT CAREERS</a>
         <% if (user) { %>
+        <a class="navbar-brand text-uppercase fw-bold fs-1" href="/emp/getjobforemp" style="color: blue;">TNT CAREERS</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -13,11 +13,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="/job/getFormCreateJob">Create new job</a></li>
-                        <li><a class="dropdown-item" href="/job/logout">Log out</a></li>
+                        <li><a class="dropdown-item" href="/emp/logout">Log out</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
+        <% } else {%>
+            <a class="navbar-brand text-uppercase fw-bold fs-1" href="/job/getjob" style="color: blue;">TNT CAREERS</a>
         <% } %>
     </div>
 </nav>

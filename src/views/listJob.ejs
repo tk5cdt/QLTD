@@ -60,48 +60,92 @@
                 </div>
             </form>
 
-            <div class="row mb-3" id="jobList">
-                <% jobs.forEach((job, index) => { %> 
-                    <div class="col-4 mb-3">
-                    <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/job/getjob?id=<%= job._id %>';">
-                        <div class="card-body">
-                            <p>
-                                <span> <%= job.location %></span>
-                                <span class="mx-4"><%= job.employmentType %></span>
-                            </p>    
-                            <h4 class="card-title"><%= job.jobTitle %></h4>
+            <% if (user) { %>
+                <div class="row mb-3" id="jobList">   
+                    <% jobsEmp.forEach((job, index) => { %> 
+                        <div class="col-4 mb-3">
+                        <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/job/getjob?id=<%= job._id %>';">
+                            <div class="card-body">
+                                <p>
+                                    <span> <%= job.location %></span>
+                                    <span class="mx-4"><%= job.employmentType %></span>
+                                </p>    
+                                <h4 class="card-title"><%= job.jobTitle %></h4>
+                            </div>
                         </div>
                     </div>
+                    <% }) %>
                 </div>
-                <% }) %>
-            </div>
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= parseInt(page) - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
 
-            <!-- Pagination -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= parseInt(page) - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                        <% if (i===page) { %>
-                            <span>
-                                <li class="page-item active" style="cursor: default;"><a class="page-link"><%= i %></a></li>
-                            </span>
-                        <% } else { %>
-                            <li class="page-item"><a class="page-link" href="?page=<%= i %>&pagesize=<%= pagesize %>"><%= i %></a></li>
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                            <% if (i===page) { %>
+                                <span>
+                                    <li class="page-item active" style="cursor: default;"><a class="page-link"><%= i %></a></li>
+                                </span>
+                            <% } else { %>
+                                <li class="page-item"><a class="page-link" href="?page=<%= i %>&pagesize=<%= pagesize %>"><%= i %></a></li>
+                            <% } %>
                         <% } %>
-                    <% } %>
 
-                    <li class="page-item <%= jobs.length < pagesize ? 'disabled' : '' %>">
-                        <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                        <li class="page-item <%= jobsEmp.length < pagesize ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            <% } else { %>
+                <div class="row mb-3" id="jobList">
+                    <% jobs.forEach((job, index) => { %> 
+                        <div class="col-4 mb-3">
+                        <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/job/getjob?id=<%= job._id %>';">
+                            <div class="card-body">
+                                <p>
+                                    <span> <%= job.location %></span>
+                                    <span class="mx-4"><%= job.employmentType %></span>
+                                </p>    
+                                <h4 class="card-title"><%= job.jobTitle %></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= parseInt(page) - 1 %>&pagesize=<%= pagesize %>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                            <% if (i===page) { %>
+                                <span>
+                                    <li class="page-item active" style="cursor: default;"><a class="page-link"><%= i %></a></li>
+                                </span>
+                            <% } else { %>
+                                <li class="page-item"><a class="page-link" href="?page=<%= i %>&pagesize=<%= pagesize %>"><%= i %></a></li>
+                            <% } %>
+                        <% } %>
+
+                        <li class="page-item <%= jobs.length < pagesize ? 'disabled' : '' %>">
+                            <a class="page-link" href="?page=<%= parseInt(page) + 1 %>&pagesize=<%= pagesize %>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>              
+            <% } %>
         </div>
 
         <div class="foot">
@@ -114,7 +158,10 @@
 </body>
 <script>
     const filterJob = (params) => {
-        axios.get('/job/getjobbyfilter', {
+        const username = '<%= user %>';
+        const apiUrl = username ? '/emp/getjobbyfilterforemp' : '/job/getjobbyfilter';
+        
+        axios.get(apiUrl, {
             params: {
                 jobName: params.jobName || '',
                 location: params.location || '',
@@ -122,59 +169,58 @@
                 page: params.page || 1,
                 pagesize: params.pagesize || 9
             }
-        }).then(response => {
-                console.log(response.data);
-                const { jobs, pagesize, page, totalJobs } = response.data;
-                console.log("Jobs:", response.data.jobs);
-                const totalPages = Math.ceil(totalJobs / pagesize);
-                document.getElementById('jobList').innerHTML = '';
+        })
+        .then(response => {
+            const { jobsEmp = [], jobs = [], pagesize, page, totalJobs } = response.data;
+            const jobList = username ? jobsEmp : jobs;
+            const totalPages = Math.ceil(totalJobs / pagesize);
+            document.getElementById('jobList').innerHTML = '';
 
-                console.log("total", response.data.jobs);
-                console.log("page", page);
-
-                jobs.forEach(element => { 
-                    document.getElementById('jobList').innerHTML += `
+            jobList.forEach(element => {
+                document.getElementById('jobList').innerHTML += `
                     <div class="col-4 mb-3">
                         <div class="card bg-light" style="height: 170px;" onclick="window.location.href='/job/getjob?id=${element._id}';">
                             <div class="card-body">
                                 <p>
-                                    <span> ${element.location}</span>
+                                    <span>${element.location}</span>
                                     <span class="mx-4">${element.employmentType}</span>
                                 </p>
                                 <h4 class="card-title">${element.jobTitle}</h4>
                             </div>
                         </div>
                     </div>
-                    `
-                });
-
-                document.querySelector('.pagination').innerHTML = `
-                    <li class="page-item ${page <= 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="javascript:void(0);" aria-label="Previous" onclick="goToPage(${ parseInt(page) - 1})">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                `
-
-                for (let i = 1; i <= totalPages; i++) {
-                    document.querySelector('.pagination').innerHTML += `
-                        <li class="page-item ${page === i ? 'active' : ''}">
-                            <a class="page-link" href="javascript:void(0);" onclick="goToPage(${i})">${i}</a>
-                        </li>   
-                    `
-                }
-
-                document.querySelector('.pagination').innerHTML += `
-                    <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
-                        <a class="page-link" href="javascript:void(0);" aria-label="Next" onclick="goToPage(${ parseInt(page) + 1})">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                `
-            }).catch(error => {
-                console.error('Error fetching data:', error);
+                `;
             });
-    }
+
+            const paginationContainer = document.querySelector('.pagination');
+            paginationContainer.innerHTML = `
+                <li class="page-item ${page <= 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="javascript:void(0);" aria-label="Previous" onclick="goToPage(${page - 1})">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationContainer.innerHTML += `
+                    <li class="page-item ${page === i ? 'active' : ''}">
+                        <a class="page-link" href="javascript:void(0);" onclick="goToPage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            paginationContainer.innerHTML += `
+                <li class="page-item ${page >= totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="javascript:void(0);" aria-label="Next" onclick="goToPage(${page + 1})">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });  
+    };
 
     document.getElementById('searchButton').addEventListener("click", () => {
         const params = { jobName: document.getElementById('jobName').value }
