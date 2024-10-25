@@ -34,11 +34,16 @@ initApiRoutes(app)
 initCVRoute(app)
 initEmpRoute(app)
 
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Server running at ' + PORT
-    })
-})
+// app.get('/', (req, res) => {
+//     res.json({
+//         message: 'Server running at ' + PORT
+//     })
+// })
+
+//set default API response
+app.get('*', (req, res) => {
+    res.redirect('/job/getjob');
+});
 
 app.listen(PORT, () => {
     console.log('Server running at ' + PORT);
