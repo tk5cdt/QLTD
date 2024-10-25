@@ -72,10 +72,6 @@
           </div>
         </div>
 
-        <div class="col-md-12">
-          <label for="location" class="form-label">Location</label>
-          <input class="form-control" type="text" id="location" name="location" required>
-        </div>
         <div class="col-md-6">
           <label for="salaryRange" class="form-label mt-2">Salary Range</label>
           <input class="form-control" type="number" id="salaryRange" name="salaryRange" required>
@@ -83,16 +79,25 @@
         <div class="col-md-6">
           <label for="jobType" class="form-label mt-2">Job Type</label>
           <select class="form-select" id="employmentType" name="employmentType" required>
-            <option selected>Choose...</option>
+            <option value="" disabled selected>Choose...</option>
             <option value="Full-time">Full-time</option>
             <option value="Internship">Internship</option>
           </select>
         </div>
-        <div class="col-md-6">
+
+        <div class="col-md-4">
+          <label for="location" class="form-label">Location</label>
+          <select class="form-select" id="location" name="location" required>
+            <option value="" disabled selected>Choose...</option>
+            <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+            <option value="Hà Nội">Hà Nội</option>
+          </select>
+        </div>
+        <div class="col-md-4">
           <label for="postedDate" class="form-label mt-2">Posted Date</label>
           <input class="form-control" type="date" id="postedDate" name="postedDate" required>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="closingDate" class="form-label mt-2">Closing Date</label>
           <input class="form-control" type="date" id="closingDate" name="closingDate" required>
         </div>

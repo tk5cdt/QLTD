@@ -76,10 +76,6 @@
           <% }) %>
         </div>
 
-        <div class="col-md-12">
-          <label for="location" class="form-label">Location</label>
-          <input class="form-control" type="text" id="location" name="location" value="<%= job.location %>" required>
-        </div>
         <div class="col-md-6">
           <label for="salaryRange" class="form-label mt-2">Salary Range</label>
           <input class="form-control" type="number" id="salaryRange" name="salaryRange" value="<%= job.salaryRange %>" required>
@@ -91,11 +87,18 @@
             <option value="Internship" <%= job.employmentType === 'Internship' ? 'selected' : '' %>>Internship</option>
           </select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
+          <label for="location" class="form-label">Location</label>
+          <select class="form-select" id="location" name="location" required>
+            <option value="Hà Nội" <%= job.location === 'Hà Nội' ? 'selected' : '' %>>Hà Nội</option>
+            <option value="Hồ Chí Minh" <%= job.location === 'Hồ Chí Minh' ? 'selected' : '' %>>Hồ Chí Minh</option>
+          </select>
+        </div>
+        <div class="col-md-4">
           <label for="postedDate" class="form-label mt-2">Posted Date</label>
           <input class="form-control" type="date" id="postedDate" name="postedDate" value="<%= job.postedDate ? job.postedDate.toISOString().split('T')[0] : '' %>" required>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="closingDate" class="form-label mt-2">Closing Date</label>
           <input class="form-control" type="date" id="closingDate" name="closingDate" value="<%= job.closingDate ? job.closingDate.toISOString().split('T')[0] : '' %>" required>
         </div>
